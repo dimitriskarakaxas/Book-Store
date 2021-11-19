@@ -1,6 +1,10 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
+const { mongoDBConnectionString, port } = require("./util/config");
 
 const shopRoutes = require("./routes/shop");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 // Setting up Application's PORT
@@ -14,7 +18,13 @@ app.set("views", "views");
 app.use(express.static("public"));
 
 app.use(shopRoutes);
+app.use("/admin", adminRoutes);
 
-app.listen(PORT, () => {
-  console.log(`The app is running at http://localhost:${PORT}`);
-});
+mongoose
+  .connect(mongoDBConnectionString)
+  .then((connectionResult) => {
+    app.listen(port, () => {
+      console.log(`The app is running at http://localhost:${port}`);
+    });
+  })
+  .catch((err) => console.log(err));
