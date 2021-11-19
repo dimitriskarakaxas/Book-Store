@@ -3,22 +3,27 @@
     
     <main>
         <ul class="cart">
-            <li class="cart-item">
-                <h1>Book</h1>
-                <h2>Quantity: 2</h2>
-                <form action="#####" method="POST">
-                    <input type="hidden" name="productId" value="######">
-                    <button type="submit" class="btn btn-delete">Delete</button>
-                </form>
-                <li class="cart-item">
-                    <h1>Book</h1>
-                    <h2>Quantity: 2</h2>
-                    <form action="#####" method="POST">
-                        <input type="hidden" name="productId" value="######">
-                        <button type="submit" class="btn btn-delete">Delete</button>
-                    </form>
-                </li>
-            </li>
+                <% cartItems.forEach(item => { %>
+                    <li class="cart-item">
+                        <h1><%= item.productId.title %></h1>
+                        <h2>Quantity: <%= item.quantity %></h2>
+                        <div class="cart-actions">
+                            <form action="">
+                                <input type="hidden" name="productId" value="item.productId._id">
+                                <button type="submit" class="btn btn-decrease">-</button>
+                            </form>
+                            <form action="">
+                                <input type="hidden" name="productId" value="item.productId._id">
+                                <button type="submit" class="btn btn-increase">+</button>
+                            </form>
+                            <form action="/delete-cart-item" method="POST">
+                                <input type="hidden" name="productId" value="item.productId._id">
+                                <button type="submit" class="btn btn-delete">Delete</button>
+                            </form>
+                        </div>
+                        
+                    </li>
+                <% }) %>
         </ul>
     </main>
 <%- include("../includes/end.ejs") %> 

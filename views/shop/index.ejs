@@ -14,8 +14,8 @@
                     <div class="product__content">
                         <p class="product__description"><%= book.description %></p>
                     </div>
-                    <form  action="">
-                        <input type="hidden" name="productId" value="<%= book._id %>">
+                    <form  action="/cart" method="POST">
+                        <input type="hidden" name="bookId" value="<%= book._id %>">
                         <button type="submit" class="btn btn-add-cart">Add to Cart</button>
                     </form>
                 </li>
