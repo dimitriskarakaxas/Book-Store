@@ -3,21 +3,24 @@
     
     <main>
         <ul class="cart">
+                <% if (cartItems.length === 0) { %>
+                    <h2 class="centered">Cart is empty</h2>
+                <% } %>
                 <% cartItems.forEach(item => { %>
                     <li class="cart-item">
                         <h1><%= item.productId.title %></h1>
                         <h2>Quantity: <%= item.quantity %></h2>
                         <div class="cart-actions">
-                            <form action="">
-                                <input type="hidden" name="productId" value="item.productId._id">
+                            <form action="/cart?decrease=true" method="POST">
+                                <input type="hidden" name="bookId" value="<%= item.productId._id %>">
                                 <button type="submit" class="btn btn-decrease">-</button>
                             </form>
-                            <form action="">
-                                <input type="hidden" name="productId" value="item.productId._id">
+                            <form action="/cart" method="POST">
+                                <input type="hidden" name="bookId" value="<%= item.productId._id %>">
                                 <button type="submit" class="btn btn-increase">+</button>
                             </form>
                             <form action="/delete-cart-item" method="POST">
-                                <input type="hidden" name="productId" value="item.productId._id">
+                                <input type="hidden" name="bookId" value="<%= item.productId._id %>">
                                 <button type="submit" class="btn btn-delete">Delete</button>
                             </form>
                         </div>

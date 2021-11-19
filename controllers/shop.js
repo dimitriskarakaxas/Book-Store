@@ -29,15 +29,25 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const bookId = req.body.bookId;
+  const doDecrease = req.query.decrease === "true" ? true : false;
 
-  console.log(req.user);
+  console.log(doDecrease);
 
-  Book.findById(bookId)
-    .then((book) => {
-      return req.user.addToCart(book);
-    })
+  req.user
+    .addToCart(bookId, doDecrease)
     .then((result) => {
       console.log(result);
+      res.redirect("/cart");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.postDeleteCartItem = (req, res, next) => {
+  const bookId = req.body.bookId;
+
+  req.user
+    .removeFromCart(bookId)
+    .then((result) => {
       res.redirect("/cart");
     })
     .catch((err) => console.log(err));

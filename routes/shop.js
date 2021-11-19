@@ -13,4 +13,7 @@ router.get("/cart", shopControllers.getCart);
 // POST => /cart
 router.post("/cart", shopControllers.postCart);
 
+// POST => /delete-cart-item
+router.post("/delete-cart-item", shopControllers.postDeleteCartItem);
+
 module.exports = router;
