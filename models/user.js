@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const Order = require("./order");
+
 const user = new Schema({
   username: {
     type: String,
@@ -73,6 +75,31 @@ user.methods.removeFromCart = function (prodId) {
   this.cart.items = updatedCartItems;
 
   return this.save();
+};
+
+user.methods.clearCart = function () {
+  this.cart.items = [];
+  return this.save();
+};
+
+user.methods.haveOrderRight = function () {
+  let ordersQuantity = 0;
+  Order.find({ userId: this._id })
+    .then((userOrders) => {
+      userOrders.forEach((order) => {
+        const orderQuantity = order.items.reduce((acc, cur) => {
+          return acc + cur.quantity;
+        }, 0);
+        ordersQuantity += orderQuantity;
+      });
+
+      const cartQuantity = this.cart.items.reduce((acc, cur) => {
+        return acc + cur.quantity;
+      }, 0);
+
+      console.log(ordersQuantity + cartQuantity <= 2 ? true : false);
+    })
+    .catch((err) => console.log(err));
 };
 
 module.exports = mongoose.model("User", user);

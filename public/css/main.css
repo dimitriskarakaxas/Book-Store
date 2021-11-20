@@ -27,6 +27,9 @@ body {
 
 .header {
   background: #093c7e;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
 }
 
 .main-navigation {
@@ -168,6 +171,11 @@ body {
   color: #d4d400;
 }
 
+.btn.btn-order {
+  background: #093c7e;
+  color: #fff;
+}
+
 .btn.btn-increase {
   background: #00b400;
   border: 2px solid #00b400;
@@ -244,4 +252,46 @@ body {
 .add-book .btn.btn-add:focus {
   background: #fff;
   color: #000;
+}
+
+/* Orders */
+.orders {
+  width: 80%;
+  max-width: 600px;
+  margin: 2rem auto 0;
+}
+
+.orders > .order + .order {
+  margin-top: 2rem;
+}
+
+.order {
+  padding: 0.5rem;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  display: flex;
+  flex-direction: column;
+}
+
+.order-title {
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid gray;
+  align-self: center;
+}
+
+.order-items {
+  padding: 1em;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-item .item-title {
+  font-weight: 400;
 }

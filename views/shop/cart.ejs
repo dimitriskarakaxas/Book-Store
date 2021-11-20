@@ -5,7 +5,7 @@
         <ul class="cart">
             <% if (cartItems.length === 0) { %>
                 <h2 class="centered">Cart is empty</h2>
-            <% } %>
+            <% } else { %>
             <% cartItems.forEach(item => { %>
                 <li class="cart-item">
                     <h1><%= item.productId.title %></h1>
@@ -26,6 +26,11 @@
                     </div>
                 </li>
             <% }) %>
+            <form action="/order" method="POST">
+                <input type="hidden" name="userId" value="<%= userId %>">
+                <button class="btn btn-order">Order Books</button>
+            </form>
+            <% } %>
         </ul>
     </main>
 <%- include("../includes/end.ejs") %> 
