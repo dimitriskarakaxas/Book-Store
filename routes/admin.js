@@ -22,4 +22,17 @@ router.post("/edit-book", adminControllers.postEditBook);
 // POST => /admin/delete-book
 router.post("/delete-book", adminControllers.postDeleteBook);
 
+// GET => /admin/users
+router.get("/users", adminControllers.getUsers);
+
+// POST => /admin/delete-user
+// ************Later***************
+// router.post("/delete-user", adminControllers.postDeleteUser);
+
+// GET => /admin/orders
+router.get("/orders", adminControllers.getOrders);
+
+// POST => /admin/delete-order
+router.post("/delete-order", adminControllers.postDeleteOrder);
+
 module.exports = router;

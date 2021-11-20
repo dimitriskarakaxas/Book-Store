@@ -1,4 +1,6 @@
+const User = require("../models/user");
 const Book = require("../models/book");
+const Order = require("../models/order");
 
 exports.getBooks = (req, res, next) => {
   Book.find({})
@@ -81,3 +83,53 @@ exports.postDeleteBook = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.getUsers = (req, res, next) => {
+  User.find({})
+    .select("username")
+    .then((users) => {
+      res.render("admin/users", {
+        pageTitle: "Admin Users",
+        path: "/admin/users",
+        users: users,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getOrders = (req, res, next) => {
+  const userId = req.query.userId;
+
+  Order.find({ userId: userId })
+    .populate("userId")
+    .then((orders) => {
+      res.render("admin/orders", {
+        pageTitle: "Admin Orders",
+        path: "/admin/users",
+        orders: orders,
+        userId: orders[0].userId._id,
+        username: orders[0].userId.username,
+      });
+    })
+    .catch((err) => {
+      res.redirect("/admin/users");
+    });
+};
+
+exports.postDeleteOrder = (req, res, next) => {
+  const orderId = req.body.orderId;
+  const userId = req.body.userId;
+
+  Order.findByIdAndRemove(orderId)
+    .then((order) => {
+      Order.find({ userId: userId }).count((err, count) => {
+        if (err || count <= 0) {
+          return res.redirect("/admin/users");
+        }
+        res.redirect(`/admin/orders?userId=${userId}`);
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.postDeleteUser = (req, res, next) => {};

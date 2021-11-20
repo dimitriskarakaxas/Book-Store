@@ -176,6 +176,12 @@ body {
   color: #fff;
 }
 
+.cart-form {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
 .btn.btn-increase {
   background: #00b400;
   border: 2px solid #00b400;
@@ -214,6 +220,13 @@ body {
   background: #093c7e;
   color: #fff;
   text-decoration: none;
+  border: 2px solid #093c7e;
+  transition: background 0.3s;
+}
+
+.btn.btn-edit:hover {
+  background: #fff;
+  color: #093c7e;
 }
 
 /* Add Book */
@@ -231,12 +244,35 @@ body {
   padding: 0.5em 1em;
   margin-top: 0.5em;
   margin-bottom: 2em;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 50%), 0 1px 0 rgb(0 0 0 / 7%) inset;
+  border: 1px solid #a6a6a6;
+  border-top-color: #949494;
+  transition: 0.4s;
+  min-height: 1.7rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  outline: 0;
 }
 
 .add-book textarea {
   margin-top: 0.5em;
   resize: none;
   padding: 0.5em 1em;
+  border: 1px solid #a6a6a6;
+  border-top-color: #949494;
+  transition: 0.4s;
+  font-size: 1rem;
+  border-radius: 4px;
+  outline: 0;
+}
+
+.add-book textarea:focus,
+.add-book input:focus,
+.add-book input :active {
+  outline: 0 !important;
+  outline: 0 !important;
+  border-color: #0a66c2;
+  box-shadow: 0 0 3px 2px rgb(14 118 168/ 50%);
 }
 
 .add-book .btn.btn-add {
@@ -294,4 +330,51 @@ body {
 
 .order-item .item-title {
   font-weight: 400;
+}
+
+/* Admin Users */
+
+.admin-user-title {
+  text-align: center;
+  margin-top: 2rem;
+}
+.user-list {
+  max-width: 600px;
+  width: 80%;
+  margin: 1rem auto 0;
+  max-height: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+}
+
+.user-list > .user + .user {
+  border-top: 1px solid #000;
+}
+
+.user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9em 1em;
+}
+
+.user-list__actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn.btn-order {
+  background: #06aa00;
+  color: #fff;
+  text-decoration: none;
+  border: 2px solid #06aa00;
+  transition: background 0.3s;
+}
+
+.btn.btn-order:hover {
+  background: #fff;
+  color: #06aa00;
+}
+
+.user-list__actions > * + * {
+  margin-left: 1rem;
 }

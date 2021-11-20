@@ -82,7 +82,7 @@ user.methods.clearCart = function () {
   return this.save();
 };
 
-user.methods.haveOrderRight = function () {
+user.methods.haveOrderRight = function (cb) {
   let ordersQuantity = 0;
   Order.find({ userId: this._id })
     .then((userOrders) => {
@@ -97,7 +97,7 @@ user.methods.haveOrderRight = function () {
         return acc + cur.quantity;
       }, 0);
 
-      console.log(ordersQuantity + cartQuantity <= 2 ? true : false);
+      cb(ordersQuantity + cartQuantity <= 2 ? true : false);
     })
     .catch((err) => console.log(err));
 };

@@ -56,7 +56,7 @@ exports.getOrder = (req, res, next) => {
   Order.find({ userId: req.user._id })
     .then((orders) => {
       res.render("shop/order", {
-        pageTitle: "order",
+        pageTitle: "Orders",
         path: "/order",
         orders: orders,
       });
@@ -65,30 +65,36 @@ exports.getOrder = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  User.findById(req.user)
-    .select("cart")
-    .populate("cart.items.productId")
-    .then((userCart) => {
-      const orderItems = userCart.cart.items.map((item) => {
-        return {
-          product: { ...item.productId },
-          quantity: item.quantity,
+  req.user.haveOrderRight((orderRight) => {
+    console.log(orderRight);
+    if (!orderRight) {
+      return res.redirect("/cart");
+    }
+    User.findById(req.user)
+      .select("cart")
+      .populate("cart.items.productId")
+      .then((userCart) => {
+        const orderItems = userCart.cart.items.map((item) => {
+          return {
+            product: { ...item.productId },
+            quantity: item.quantity,
+          };
+        });
+        const order = {
+          items: orderItems,
+          userId: userCart._id,
         };
-      });
-      const order = {
-        items: orderItems,
-        userId: userCart._id,
-      };
 
-      const newOrder = new Order(order);
-      newOrder
-        .save()
-        .then((result) => {
-          return req.user.clearCart();
-        })
-        .then((result) => {
-          res.redirect("/order");
-        })
-        .catch((err) => console.log(err));
-    });
+        const newOrder = new Order(order);
+        newOrder
+          .save()
+          .then((result) => {
+            return req.user.clearCart();
+          })
+          .then((result) => {
+            res.redirect("/order");
+          })
+          .catch((err) => console.log(err));
+      });
+  });
 };
