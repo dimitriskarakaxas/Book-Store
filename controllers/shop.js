@@ -31,12 +31,9 @@ exports.postCart = (req, res, next) => {
   const bookId = req.body.bookId;
   const doDecrease = req.query.decrease === "true" ? true : false;
 
-  console.log(doDecrease);
-
   req.user
     .addToCart(bookId, doDecrease)
     .then((result) => {
-      console.log(result);
       res.redirect("/cart");
     })
     .catch((err) => console.log(err));

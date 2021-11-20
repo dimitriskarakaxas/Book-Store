@@ -156,21 +156,42 @@ body {
 }
 
 .btn.btn-decrease {
-  background: rgb(158, 158, 0);
+  background: #d4d400;
+  border: 2px solid #d4d400;
   font-weight: 900;
   color: #fff;
+  transition: background 0.3s;
+}
+
+.btn.btn-decrease:hover {
+  background: #fff;
+  color: #d4d400;
 }
 
 .btn.btn-increase {
-  background: green;
+  background: #00b400;
+  border: 2px solid #00b400;
   font-weight: 900;
   color: #fff;
+  transition: background 0.3s;
+}
+
+.btn.btn-increase:hover {
+  background: #fff;
+  color: #00b400;
 }
 
 .btn.btn-delete {
   background: #ff0000;
+  border: 2px solid #ff0000;
   color: #fff;
   font-weight: 900;
+  transition: background 0.3s;
+}
+
+.btn.btn-delete:hover {
+  background: #fff;
+  color: #ff0000;
 }
 
 /* Admin Books */

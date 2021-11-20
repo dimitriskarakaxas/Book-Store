@@ -1,3 +1,5 @@
+const path = require("path");
+
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -17,7 +19,7 @@ app.set("views", "views");
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from public folder
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
   User.findOne({})
