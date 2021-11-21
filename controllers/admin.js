@@ -132,4 +132,86 @@ exports.postDeleteOrder = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-exports.postDeleteUser = (req, res, next) => {};
+exports.postDeleteUser = (req, res, next) => {
+  const userId = req.body.userId;
+
+  User.findByIdAndRemove(userId)
+    .then((deleteUser) => {
+      console.log(deleteUser);
+
+      res.redirect("/admin/users");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getAddUser = (req, res, next) => {
+  res.render("admin/add-user", {
+    pageTitle: "Add User",
+    path: "/admin/add-user",
+    editMode: false,
+  });
+};
+
+exports.postAddUser = (req, res, next) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({ username: username })
+    .then((user) => {
+      if (user) {
+        return res.redirect("/admin/add-user");
+      }
+      const newUser = new User({
+        username: username,
+        password: password,
+        cart: {},
+      });
+      return newUser
+        .save()
+        .then((result) => {
+          res.redirect("/admin/users");
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getEditUser = (req, res, next) => {
+  const userId = req.query.userId;
+  User.findById(userId)
+    .select("username")
+    .then((user) => {
+      console.log(user);
+      res.render("admin/add-user", {
+        pageTitle: "Edit User",
+        path: "/admin/add-user",
+        editMode: true,
+        user: user,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+exports.postEditUser = (req, res, next) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const userId = req.body.userId;
+
+  User.findById(userId).then((user) => {
+    console.log(user);
+    if (!user) {
+      return res.redirect("/admin/users");
+    }
+    user.username = username;
+    user.password = password;
+    user
+      .save()
+      .then((result) => {
+        console.log(result);
+        res.redirect("/admin/users");
+      })
+      .catch((err) => console.log(err));
+  });
+};

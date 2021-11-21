@@ -2,15 +2,27 @@ const path = require("path");
 
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
 
-const { mongoDBConnectionString, port } = require("./util/config");
+const {
+  mongoDBConnectionString,
+  port,
+  sessionSecretString,
+} = require("./util/config");
 
 const shopRoutes = require("./routes/shop");
 const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 
 const User = require("./models/user");
 
 const app = express();
+
+const store = new MongoDBStore({
+  uri: mongoDBConnectionString,
+  collection: "sessions",
+});
 
 // Setting up EJS templating engine and the views folder
 app.set("view engine", "ejs");
@@ -21,11 +33,31 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from public folder
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  session({
+    secret: sessionSecretString,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
+
 app.use((req, res, next) => {
-  User.findOne({})
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.isAdmin = req.session.isAdmin;
+  next();
+});
+
+app.use((req, res, next) => {
+  if (!req.session.userId) {
+    return next();
+  }
+  User.findById(req.session.userId)
     .then((user) => {
+      if (!user) {
+        return next();
+      }
       req.user = user;
-      //   console.log(user);
       next();
     })
     .catch((err) => console.log(err));
@@ -33,6 +65,7 @@ app.use((req, res, next) => {
 
 app.use(shopRoutes);
 app.use("/admin", adminRoutes);
+app.use(authRoutes);
 
 mongoose
   .connect(mongoDBConnectionString)

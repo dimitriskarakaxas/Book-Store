@@ -65,8 +65,8 @@ exports.getOrder = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+  // https://stackoverflow.com/questions/32546909/how-to-prevent-double-submitting-forms-in-expressjs
   req.user.haveOrderRight((orderRight) => {
-    console.log(orderRight);
     if (!orderRight) {
       return res.redirect("/cart");
     }
@@ -84,6 +84,10 @@ exports.postOrder = (req, res, next) => {
           items: orderItems,
           userId: userCart._id,
         };
+
+        if (order.items.length <= 0) {
+          return res.redirect("/cart");
+        }
 
         const newOrder = new Order(order);
         newOrder

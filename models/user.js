@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const { Schema } = mongoose;
 
 const Order = require("./order");
@@ -28,6 +29,23 @@ const user = new Schema({
     ],
   },
 });
+
+// Pre Save Hook. Generate hashed password
+user.pre("save", async function (next) {
+  // Check if this is new account or password is modfied
+  if (!this.isModified("password")) {
+    // if the password is not modfied then continue
+  } else {
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+});
+
+// Compare passwords
+user.methods.comparePasswords = async function (canditatePassword) {
+  const isMatch = await bcrypt.compare(canditatePassword, this.password);
+  return isMatch;
+};
 
 user.methods.addToCart = function (prodId, doDecrease) {
   let cartProductIndex = -1;
