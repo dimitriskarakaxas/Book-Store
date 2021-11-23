@@ -102,22 +102,8 @@ app.use((req, res, next) => {
 mongoose
   .connect(mongoDBConnectionString)
   .then((connectionResult) => {
-    User.findOne({})
-      .then((user) => {
-        if (!user) {
-          return User.create({
-            username: "Saddam",
-            password: "123123",
-            cart: {},
-          });
-        }
-        return Promise.resolve("Success");
-      })
-      .then((result) => {
-        app.listen(port, () => {
-          console.log(`The app is running at http://localhost:${port}`);
-        });
-      })
-      .catch((err) => console.log(err));
+    app.listen(port, () => {
+      console.log(`The app is running at http://localhost:${port}`);
+    });
   })
   .catch((err) => console.log(err));
